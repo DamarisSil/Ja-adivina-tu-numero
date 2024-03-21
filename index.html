@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adivina el número</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-image: url('assets/numeros.jpg'); /* Reemplaza 'ruta/a/la/imagen.jpg' por la ruta de tu imagen */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center text-white"><strong>Piense en un número del 1 al 100</strong></h1>
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-6">
+            <div id="result" class="text-center"></div>
+            <button id="start" class="btn btn-success btn-block mt-3">Empezar</button>
+          </div>
+        </div>
+      </div>
+
+<script>
+  // Función para adivinar el número utilizando búsqueda binaria
+  function guessNumber() {
+    let low = 1;
+    let high = 100;
+    let guess;
+
+    while (low <= high) {
+      guess = Math.floor((low + high) / 2);
+      let isCorrect = confirm(`¿Es ${guess} tu número?`);
+      
+      if (isCorrect) {
+        document.getElementById('result').innerHTML = `
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Tu número es el ${guess}. ¡Excelente decisión!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>`;
+        return;
+      } else {
+        let isLower = confirm(`¿Es tu número menor que ${guess}?`);
+        if (isLower) {
+          high = guess - 1;
+        } else {
+          low = guess + 1;
+        }
+      }
+    }
+
+    // Si el bucle termina y no se encuentra el número
+    document.getElementById('result').innerHTML = `
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Lo siento, no pude adivinar tu número.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>`;
+  }
+
+  // Evento click para empezar el juego
+  document.getElementById('start').addEventListener('click', function() {
+    document.getElementById('result').innerHTML = '';
+    guessNumber();
+  });
+</script>
+
+</body>
+</html>
